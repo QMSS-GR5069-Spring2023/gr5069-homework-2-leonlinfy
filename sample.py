@@ -65,9 +65,6 @@ print ('b. The average height of climbed is', climbed_avg, ', while the unclimbe
 # In[ ]:
 
 
-members.head()
-
-
 # In[ ]:
 
 
@@ -111,9 +108,6 @@ join = join2 [join2 ['hired'] == False]
 join_female = join[join['sex'] == 'F']
 
 
-join_female.info()
-
-
 # In[11]:
 
 
@@ -137,9 +131,6 @@ print('b. the cross_table is:\n', sex_prop.groupby('sex').mean())
 # b) Calculate the length_of_expedition as the time between the basecamp_date and the termination_date in days. Now, standardize these length_of_expedition values to z-values grouped by each peak (that is you need to standardize with the mean and standard deviation of expeditions for the same peak only). Are longer expeditions more or less likely to be associated with death? (no statistical test necessary)
 
 # In[ ]:
-
-
-expeditions.head() 
 
 
 # In[ ]:
@@ -166,9 +157,6 @@ decades = [s1900, s1910, s1920, s1930, s1940, s1950, s1960, s1970, s1980, s1990,
 
 
 # In[ ]:
-
-
-s1980.head()
 
 
 # In[ ]:
