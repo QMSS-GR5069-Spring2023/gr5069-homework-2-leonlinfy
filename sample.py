@@ -143,12 +143,19 @@ print('b. The minimum is', youngest, ', the maximum is', oldest, 'and the averag
 # then filtering down to women who were not hired
 
 
-join1 = pd.merge(peaks, expeditions,
+peaks_exped = pd.merge(peaks, expeditions,
                 how = 'left')
 
 
-join2 = pd.merge(join1, members,
+peaks_exped_memb = pd.merge(peaks_exped, members,
                 how = 'left')
+
+not_hired = peaks_exped_memb [peaks_exped_memb ['hired'] == False]
+females_not_hired = not_hired[not_hired['sex'] == 'F']
+
+
+females_not_hired.info()
+
 join = join2[join2['hired'] == False]
 join_female = join[join['sex'] == 'F']
 
@@ -160,13 +167,18 @@ join_female.info()
 
 
 
+
 # In[11]:
 
 # filtering to the record with the oldest date
 
 
+
+female_peak = females_not_hired.loc[females_not_hired['year'] == females_not_hired['year'].min(), ['member_id', 'peak_name', 'height_metres']]
+
 female_peak = join_female.loc[join_female['year'] == join_female['year'].min(), ['member_id', 'peak_name', 
                                                                                 'height_metres']]
+
 print('a. The first record is \n', female_peak)
 
 
@@ -175,7 +187,7 @@ print('a. The first record is \n', female_peak)
 
 # subsetting the large merged dataset and averaging stats by gender
 
-sex_prop = join.loc[:, ['sex','success','oxygen_used','died']]
+sex_prop = not_hired.loc[:, ['sex','success','oxygen_used','died']]
 print('b. the cross_table is:\n', sex_prop.groupby('sex').mean())
 
 
