@@ -1,15 +1,13 @@
-#!/usr/bin/env python
-# coding: utf-8
+
 
 # In[1]:
+
+# ::::::::: IMPORT STATEMENTS ::::::::
+
 
 
 import numpy as np
 import pandas as pd
-
-
-# In[2]:
-
 
 from google.colab import drive
 drive.mount('/content/gdrive')
@@ -17,12 +15,19 @@ import os
 os.chdir('/content/gdrive/MyDrive')
 
 
+
 # In[3]:
+
+
+# ::::::::: IMPORT DATA ::::::::
 
 
 peaks = pd.read_csv("peaks.csv")
 expeditions = pd.read_csv("expeditions.csv")
 members = pd.read_csv("members.csv")
+
+
+# ::::::::: QUESTION 1 ::::::::
 
 
 # ### 1. Peaks
@@ -32,15 +37,13 @@ members = pd.read_csv("members.csv")
 # 
 # b) What is the average height of the climbed peaks vs. unclimbed peaks?
 
-# In[ ]:
-
 
 peaks.head()
 
 
 # In[ ]:
 
-
+# filtering to unclimbed peaks and taking ratio of unclimbed to total
 unclimbed = peaks[peaks['climbing_status'] == 'Unclimbed']
 proportion_of_unclimbed = len(unclimbed) / len (peaks)
 print ('a. The proportion is', proportion_of_unclimbed)
@@ -48,11 +51,21 @@ print ('a. The proportion is', proportion_of_unclimbed)
 
 # In[ ]:
 
+# filtering to climbed peaks and taking the average of the height for 
+# both climbed and unclimbed peaks
+
+unclimbed = peaks[peaks['climbing_status'] == 'Unclimbed']
+proportion_of_unclimbed = len(unclimbed) / len (peaks)
+print('a. The proportion is', proportion_of_unclimbed)
+
 
 climbed = peaks[peaks['climbing_status'] == 'Climbed']
 climbed_avg = climbed['height_metres'].mean()
 unclimbed_avg = unclimbed['height_metres'].mean()
-print ('b. The average height of climbed is', climbed_avg, ', while the unclimbed is', unclimbed_avg)
+print('b. The average height of climbed is', climbed_avg, ', while the unclimbed is', unclimbed_avg)
+
+
+# ::::::::: QUESTION 2 :::::::::
 
 
 # ### 2. Sherpas
@@ -62,13 +75,28 @@ print ('b. The average height of climbed is', climbed_avg, ', while the unclimbe
 # 
 # b) What are their minimum, maximum, and average ages?
 
-# In[ ]:
-
-
 members.head()
 
 
-# In[ ]:
+
+
+
+nepal = members[members['citizenship'] == 'Nepal']
+hire = nepal[nepal['hired'] == True]
+proportion_of_hire = len(hire) / len(nepal)
+print ('a. The porportion is', proportion_of_hire)
+
+
+
+
+# filtering to people with Nepal in citizenship and whether they were hired
+# then calculating proportion of hired Nepal citizens to total Nepal citizens
+
+
+
+oldest = hire['age'].max()
+youngest = hire['age'].min()
+average_age = hire['age'].mean()
 
 
 Nepal = members[members['citizenship'] == 'Nepal']
@@ -79,12 +107,17 @@ print ('a. The porportion is', proportion_of_hire)
 
 # In[ ]:
 
+# finding the oldest and youngest ages of Nepal citizens hired, as well as the average age
+
 
 oldest = hire ['age'].max()
 youngest = hire ['age'].min()
 average_age = hire ['age'].mean()
+
 print('b. The minimum is', youngest, ', the maximum is', oldest, 'and the average age is', average_age)
 
+
+# ::::::::: QUESTION 3 :::::::::
 
 # ### 3. Gender
 # 
@@ -99,7 +132,11 @@ print('b. The minimum is', youngest, ', the maximum is', oldest, 'and the averag
 # 
 # That is, sex should be displayed as the rows of the output and the three requested proportions as its columns.
 
+
 # In[10]:
+
+# merging peaks, expeditions, and members data together
+# then filtering down to women who were not hired
 
 
 join1 = pd.merge(peaks, expeditions,
@@ -108,14 +145,17 @@ join1 = pd.merge(peaks, expeditions,
 
 join2 = pd.merge(join1, members,
                 how = 'left')
-join = join2 [join2 ['hired'] == False]
+join = join2[join2['hired'] == False]
 join_female = join[join['sex'] == 'F']
 
 
 join_female.info()
 
 
+
 # In[11]:
+
+# filtering to the record with the oldest date
 
 
 female_peak = join_female.loc[join_female['year'] == join_female['year'].min(), ['member_id', 'peak_name', 
@@ -123,11 +163,16 @@ female_peak = join_female.loc[join_female['year'] == join_female['year'].min(), 
 print('a. The first record is \n', female_peak)
 
 
+
 # In[12]:
 
+# subsetting the large merged dataset and averaging stats by gender
 
 sex_prop = join.loc[:, ['sex','success','oxygen_used','died']]
 print('b. the cross_table is:\n', sex_prop.groupby('sex').mean())
+
+
+# ::::::::: QUESTION 5 :::::::::
 
 
 # ### 4.Accidents
@@ -141,14 +186,13 @@ print('b. the cross_table is:\n', sex_prop.groupby('sex').mean())
 # the mean and standard deviation of expeditions for the same peak only). Are longer expeditions more or less likely to 
 # be associated with death? (no statistical test necessary)
 
-# In[ ]:
-
-
 expeditions.head() 
 
 
+
 # In[ ]:
 
+# subsetting the expeditions data by decade
 
 s1900 = expeditions[(expeditions['year'] >= 1900) & (expeditions['year'] < 1910)]
 s1910 = expeditions[(expeditions['year'] >= 1910) & (expeditions['year'] < 1920)]
@@ -164,29 +208,32 @@ s2000 = expeditions[(expeditions['year'] >= 2000) & (expeditions['year'] < 2010)
 s2010 = expeditions[(expeditions['year'] >= 2010) & (expeditions['year'] < 2020)]
 
 
+
 # In[ ]:
+
+# putting the decades dataframes in a list
 
 
 decades = [s1900, s1910, s1920, s1930, s1940, s1950, s1960, s1970, s1980, s1990, s2000, s2010]
 
 
-# In[ ]:
-
-
 s1980.head()
 
 
+
 # In[ ]:
 
+# forloop through decades dataframes to answer part a of question 4
 
 print('a.')
 j = 1900
 for i in decades:
   
   i_total = len(i)
-  print ('For the decades of', j)
-  print ('The number of expeditions in', 'is', i_total)
+  print('For the decades of', j)
+  print('The number of expeditions in', 'is', i_total)
   i_members_sum = i['members'].sum()
+
   print ('The number of members is', i_members_sum)
   i_members_death = i['member_deaths'].sum() / i_members_sum 
 
@@ -197,19 +244,34 @@ for i in decades:
 
   #same question as above
   print ('The average of hired_staff_death is', i_hired_death)  
+
+  print('The number of members is', i_members_sum)
+  i_members_death = i['member_deaths'].sum() / i_members_sum #question : should the denominator be total pop or just member?
+  print('The average of members_death is', i_members_death)
+  i_hired_sum = i['hired_staff'].sum()
+  i_hired_death = i['hired_staff_deaths'].sum() / i_hired_sum
+  print('The average of hired_staff_death is', i_hired_death)  #same question as above
+
   print('\n')
   j=j+10 # move forward the decades
+
   
 
 
 # In[ ]:
+
+# converting dates to datetime format
+
 
 
 expeditions['termination_date'] = pd.to_datetime(expeditions['termination_date'], errors='coerce')
 expeditions['basecamp_date'] = pd.to_datetime(expeditions['basecamp_date'], errors='coerce')
 
 
+
 # In[ ]:
+
+# calculating how long it takes from basecamp to terminating the expedition
 
 
 expeditions['length_of_expedition'] = (expeditions['termination_date'] - expeditions['basecamp_date']).dt.days
@@ -219,7 +281,10 @@ expeditions_extract = expeditions[['peak_name', 'length_of_expedition']].dropna(
 expeditions_extract
 
 
+
 # In[ ]:
+
+# calculating z-score for each expedition length
 
 
 expeditions_extract['z_score_length'] = expeditions_extract.groupby('peak_name')\
