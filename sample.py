@@ -27,12 +27,12 @@ peaks.head()
 
 unclimbed = peaks[peaks['climbing_status'] == 'Unclimbed']
 proportion_of_unclimbed = len(unclimbed) / len (peaks)
-print ('a. The proportion is', proportion_of_unclimbed)
+print('a. The proportion is', proportion_of_unclimbed)
 
 climbed = peaks[peaks['climbing_status'] == 'Climbed']
 climbed_avg = climbed['height_metres'].mean()
 unclimbed_avg = unclimbed['height_metres'].mean()
-print ('b. The average height of climbed is', climbed_avg, ', while the unclimbed is', unclimbed_avg)
+print('b. The average height of climbed is', climbed_avg, ', while the unclimbed is', unclimbed_avg)
 
 
 # ### 2. Sherpas
@@ -45,6 +45,22 @@ print ('b. The average height of climbed is', climbed_avg, ', while the unclimbe
 members.head()
 
 
+
+
+
+nepal = members[members['citizenship'] == 'Nepal']
+hire = nepal[nepal['hired'] == True]
+proportion_of_hire = len(hire) / len(nepal)
+print ('a. The porportion is', proportion_of_hire)
+
+
+
+
+
+oldest = hire['age'].max()
+youngest = hire['age'].min()
+average_age = hire['age'].mean()
+=======
 Nepal = members[members['citizenship'] == 'Nepal']
 hire = Nepal [Nepal ['hired'] == True]
 proportion_of_hire = len (hire) / len (Nepal)
@@ -54,6 +70,7 @@ print ('a. The porportion is', proportion_of_hire)
 oldest = hire ['age'].max()
 youngest = hire ['age'].min()
 average_age = hire ['age'].mean()
+
 print('b. The minimum is', youngest, ', the maximum is', oldest, 'and the average age is', average_age)
 
 
@@ -75,7 +92,7 @@ join1 = pd.merge(peaks, expeditions,
 
 join2 = pd.merge(join1, members,
                 how = 'left')
-join = join2 [join2 ['hired'] == False]
+join = join2[join2['hired'] == False]
 join_female = join[join['sex'] == 'F']
 
 
@@ -124,15 +141,15 @@ j = 1900
 for i in decades:
   
   i_total = len(i)
-  print ('For the decades of', j)
-  print ('The number of expeditions in', 'is', i_total)
+  print('For the decades of', j)
+  print('The number of expeditions in', 'is', i_total)
   i_members_sum = i['members'].sum()
-  print ('The number of members is', i_members_sum)
+  print('The number of members is', i_members_sum)
   i_members_death = i['member_deaths'].sum() / i_members_sum #question : should the denominator be total pop or just member?
-  print ('The average of members_death is', i_members_death)
+  print('The average of members_death is', i_members_death)
   i_hired_sum = i['hired_staff'].sum()
   i_hired_death = i['hired_staff_deaths'].sum() / i_hired_sum
-  print ('The average of hired_staff_death is', i_hired_death)  #same question as above
+  print('The average of hired_staff_death is', i_hired_death)  #same question as above
   print('\n')
   j=j+10 # move forward the decades
 
