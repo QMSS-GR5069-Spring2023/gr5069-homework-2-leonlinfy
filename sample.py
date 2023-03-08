@@ -202,6 +202,37 @@ expeditions.head()
 
 # In[ ]:
 
+
+# creating new function to avoid using same code over and over
+# technically this should be at the top of this file or in another file to pull in
+# I can't figure out how to do that without merge conflicts
+def split_df_by_year(df, col, year1, year2):
+  new_df = df[(df[col] >= year1) & (df[col] < year2)]
+  return new_df
+
+# creating empty list to fill with dataframes
+decades = []
+
+# creating dictionary to iterate through with decade definitions
+years = {'decade1':[1900,1910],
+        'decade2':[1910,1920],
+        'decade3':[1920,1930],
+        'decade4':[1920,1930],
+        'decade5':[1930,1940],
+        'decade6':[1940,1950],
+        'decade7':[1950,1960],
+        'decade8':[1960,1970],
+        'decade9':[1970,1980],
+        'decade10':[1980,1990],
+        'decade11':[1990,2000],
+        'decade12':[2000,2010],
+        'decade13':[2010,2020]}
+
+# iterating through decade dictionary and appending to empty list
+for key,value in years.iteritems():
+  decade_df = split_df_by_year(expeditions,year,value[0],value[1])
+  decades.append(decade_df)
+
 # subsetting the expeditions data by decade
 
 s1900 = expeditions[(expeditions['year'] >= 1900) & (expeditions['year'] < 1910)]
@@ -230,6 +261,7 @@ decades = [s1900, s1910, s1920, s1930, s1940, s1950, s1960, s1970, s1980, s1990,
 
 
 s1980.head()
+
 
 
 
