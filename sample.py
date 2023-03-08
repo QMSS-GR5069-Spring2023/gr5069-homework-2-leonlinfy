@@ -79,6 +79,9 @@ members.head()
 
 
 
+# In[ ]:
+
+
 
 
 nepal = members[members['citizenship'] == 'Nepal']
@@ -97,6 +100,7 @@ print ('a. The porportion is', proportion_of_hire)
 oldest = hire['age'].max()
 youngest = hire['age'].min()
 average_age = hire['age'].mean()
+
 
 
 Nepal = members[members['citizenship'] == 'Nepal']
@@ -149,7 +153,10 @@ join = join2[join2['hired'] == False]
 join_female = join[join['sex'] == 'F']
 
 
+
+
 join_female.info()
+
 
 
 
@@ -186,7 +193,10 @@ print('b. the cross_table is:\n', sex_prop.groupby('sex').mean())
 # the mean and standard deviation of expeditions for the same peak only). Are longer expeditions more or less likely to 
 # be associated with death? (no statistical test necessary)
 
+
+
 expeditions.head() 
+
 
 
 
@@ -217,7 +227,10 @@ s2010 = expeditions[(expeditions['year'] >= 2010) & (expeditions['year'] < 2020)
 decades = [s1900, s1910, s1920, s1930, s1940, s1950, s1960, s1970, s1980, s1990, s2000, s2010]
 
 
+
+
 s1980.head()
+
 
 
 
