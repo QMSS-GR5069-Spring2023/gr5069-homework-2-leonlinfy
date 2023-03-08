@@ -121,7 +121,8 @@ print('b. The minimum is', youngest, ', the maximum is', oldest, 'and the averag
 
 # ### 3. Gender
 # 
-# Now use all three data sets and join them on the provided ID variables. For this question, limit yourself to the subset of non-hired participants.
+# Now use all three data sets and join them on the provided ID variables. For this question, limit yourself 
+# to the subset of non-hired participants.
 # 
 # a) What is the first record of a woman summitting a peak? Which peak (name and height in meters) was that?
 # 
@@ -157,7 +158,8 @@ join_female.info()
 # filtering to the record with the oldest date
 
 
-female_peak = join_female.loc[join_female['year'] == join_female['year'].min(), ['member_id', 'peak_name', 'height_metres']]
+female_peak = join_female.loc[join_female['year'] == join_female['year'].min(), ['member_id', 'peak_name', 
+                                                                                'height_metres']]
 print('a. The first record is \n', female_peak)
 
 
@@ -176,10 +178,13 @@ print('b. the cross_table is:\n', sex_prop.groupby('sex').mean())
 # ### 4.Accidents
 # For this question, use the expeditions data only.
 # 
-# a) Aggregate the data by decade and count the number of expeditions, the total number of expedition members, and the average rates of death for members and 
-# hired staff. Briefly describe what you found.
+# a) Aggregate the data by decade and count the number of expeditions, the total number of expedition members, and 
+# the average rates of death for members and hired staff. Briefly describe what you found.
 # 
-# b) Calculate the length_of_expedition as the time between the basecamp_date and the termination_date in days. Now, standardize these length_of_expedition values to z-values grouped by each peak (that is you need to standardize with the mean and standard deviation of expeditions for the same peak only). Are longer expeditions more or less likely to be associated with death? (no statistical test necessary)
+# b) Calculate the length_of_expedition as the time between the basecamp_date and the termination_date in days. Now, 
+# standardize these length_of_expedition values to z-values grouped by each peak (that is you need to standardize with 
+# the mean and standard deviation of expeditions for the same peak only). Are longer expeditions more or less likely to 
+# be associated with death? (no statistical test necessary)
 
 expeditions.head() 
 
@@ -228,12 +233,25 @@ for i in decades:
   print('For the decades of', j)
   print('The number of expeditions in', 'is', i_total)
   i_members_sum = i['members'].sum()
+
+  print ('The number of members is', i_members_sum)
+  i_members_death = i['member_deaths'].sum() / i_members_sum 
+
+  #question : should the denominator be total pop or just member?
+  print ('The average of members_death is', i_members_death)
+  i_hired_sum = i['hired_staff'].sum()
+  i_hired_death = i['hired_staff_deaths'].sum() / i_hired_sum
+
+  #same question as above
+  print ('The average of hired_staff_death is', i_hired_death)  
+
   print('The number of members is', i_members_sum)
   i_members_death = i['member_deaths'].sum() / i_members_sum #question : should the denominator be total pop or just member?
   print('The average of members_death is', i_members_death)
   i_hired_sum = i['hired_staff'].sum()
   i_hired_death = i['hired_staff_deaths'].sum() / i_hired_sum
   print('The average of hired_staff_death is', i_hired_death)  #same question as above
+
   print('\n')
   j=j+10 # move forward the decades
 
@@ -257,7 +275,9 @@ expeditions['basecamp_date'] = pd.to_datetime(expeditions['basecamp_date'], erro
 
 
 expeditions['length_of_expedition'] = (expeditions['termination_date'] - expeditions['basecamp_date']).dt.days
-expeditions_extract = expeditions[['peak_name', 'length_of_expedition']].dropna() # for this question, i cannot find a way to deal with Nan except dropping. I am looking for an auto-fill.
+
+# for this question, i cannot find a way to deal with Nan except dropping. I am looking for an auto-fill.
+expeditions_extract = expeditions[['peak_name', 'length_of_expedition']].dropna() 
 expeditions_extract
 
 
@@ -267,7 +287,8 @@ expeditions_extract
 # calculating z-score for each expedition length
 
 
-expeditions_extract['z_score_length'] = expeditions_extract.groupby('peak_name').transform(lambda x: (x - x.mean()) / x.std())
+expeditions_extract['z_score_length'] = expeditions_extract.groupby('peak_name')\
+                                            .transform(lambda x: (x - x.mean()) / x.std())
 print('b. the final answer is \n', expeditions_extract)
 
 
